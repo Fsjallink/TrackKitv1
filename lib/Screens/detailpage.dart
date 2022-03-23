@@ -335,7 +335,7 @@ class _detailsPageState extends State<detailsPage> {
           android: AndroidNotificationDetails(
             channel.id,
             channel.name,
-            icon: 'Icon.png',
+            icon: 'assets/Icon.png',
           ),
         ));
   }
@@ -409,7 +409,7 @@ class _detailsPageState extends State<detailsPage> {
             android: AndroidNotificationDetails(
               channel.id,
               channel.name,
-              icon: 'Icon.png',
+              icon: 'assets/Icon.png',
             ),
           ));
     }
