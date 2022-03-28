@@ -9,6 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:trackkit/model/user_model.dart';
 import 'addnewitem.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
+
 
 class detailsPage extends StatefulWidget {
   detailsPage(
@@ -323,6 +325,8 @@ class _detailsPageState extends State<detailsPage> {
             ),
           ],
         ));
+
+
   }
 
   Future<void> _showNotificationWithNoTitle(int notificationId, String body) async {
@@ -380,6 +384,8 @@ class _detailsPageState extends State<detailsPage> {
       }
     });
   }
+
+
 
   checkItem(int id, var data){
     //["Item"].toString()

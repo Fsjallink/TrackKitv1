@@ -1,4 +1,3 @@
-// ignore: file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:trackkit/Screens/addkitscreen.dart';
@@ -25,7 +24,7 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
 
   Future<void> startBarcodeScanStream() async {
     FlutterBarcodeScanner.getBarcodeStreamReceiver(
-            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
+        '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
         .listen((barcode) => print(barcode));
   }
 
@@ -61,8 +60,8 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
   final database = FirebaseDatabase(
-          databaseURL:
-              "https://trackkit-a5cf3-default-rtdb.asia-southeast1.firebasedatabase.app")
+      databaseURL:
+      "https://trackkit-a5cf3-default-rtdb.asia-southeast1.firebasedatabase.app")
       .reference()
       .child("NTU");
 
@@ -80,12 +79,13 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
   }
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF21BFBD),
       body: Column(
         children: <Widget>[
-          const SizedBox(height: 25.0),
+          const SizedBox(height: 60.0),
           Padding(
             padding: const EdgeInsets.only(left: 40.0),
             child: Row(
@@ -101,60 +101,78 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                     style: TextStyle(
                         fontFamily: 'Montserrat',
                         color: Colors.white,
-                        fontSize: 25.0))
+                        fontSize: 25.0)),
+                Text(' Your first-aid solution',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontStyle: FontStyle. italic,
+                        color: Colors.white,
+                        fontSize: 15.0))
               ],
             ),
+
           ),
           const SizedBox(height: 40.0),
-          Container(
-            height: MediaQuery.of(context).size.height - 185.0,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(75.0)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 45.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - 300.0,
-                child: StreamBuilder(
-                  stream: database.onValue,
-                  builder: (context, AsyncSnapshot<Event> snapshot) {
-                    if (snapshot.hasData &&
-                        !snapshot.hasError &&
-                        snapshot.data!.snapshot.value != null) {
-                      print("Error on the way");
-                      lists.clear();
-                      DataSnapshot dataValues = snapshot.data!.snapshot;
-                      Map<dynamic, dynamic> values = dataValues.value;
-                      values.forEach((key, values) {
-                        values["referenceName"] = key;
+          Scrollbar(
+            isAlwaysShown: true,
+            child: Container(
+              height: MediaQuery.of(context).size.height - 180.0,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(75.0)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height - 300.0,
+                  child: StreamBuilder(
+                    stream: database.onValue,
+                    builder: (context, AsyncSnapshot<Event> snapshot) {
+                      if (snapshot.hasData &&
+                          !snapshot.hasError &&
+                          snapshot.data!.snapshot.value != null) {
+                        print("Error on the way");
+                        lists.clear();
+                        DataSnapshot dataValues = snapshot.data!.snapshot;
+                        Map<dynamic, dynamic> values = dataValues.value;
+                        values.forEach((key, values) {
+                          values["referenceName"] = key;
 
-                        lists.add(values);
-                      });
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: lists.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return _buildItem(
-                              'assets/Icon.png',
-                              lists[index]["Lab Name"].toString(),
-                              lists[index]["Place"].toString(),
-                              lists[index]["Barcode"].toString(),
-                              lists[index]["referenceName"]);
-                        },
-                      );
-                    }
-                    return const Text("Add Kits");
-                  },
+                          lists.add(values);
+                        });
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: lists.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _buildItem(
+                                'assets/Icon.png',
+                                lists[index]["Lab Name"].toString(),
+                                lists[index]["Place"].toString(),
+                                lists[index]["Barcode"].toString(),
+                                lists[index]["referenceName"]);
+                          },
+                        );
+                      }
+                      return const Text("Add Kits");
+                    },
+                  ),
                 ),
               ),
-            ),
-          ),
-          ButtonTheme(
+            ),),
+
+          Container(
+            height: 51,
+            decoration: const BoxDecoration(
+              color: Colors.white ,),
+
             child: ButtonBar(
               alignment: MainAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF21BFBD),
+                    onPrimary: Colors.white,
+                  ),
                   child: const Text('Add Kit'),
                   onPressed: () {
                     Navigator.push(
@@ -164,6 +182,10 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                   },
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFF21BFBD),
+                    onPrimary: Colors.white,
+                  ),
                   child: const Text('Scan QR'),
                   onPressed: () {
                     scanQR().then((value) {
@@ -185,12 +207,12 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => detailsPage(
-                                    heroTag: imgPath,
-                                    labPlace: labby,
-                                    foodName: labName,
-                                    barcode: barcode,
-                                    referenceName: barcode,
-                                  )),
+                                heroTag: imgPath,
+                                labPlace: labby,
+                                foodName: labName,
+                                barcode: barcode,
+                                referenceName: barcode,
+                              )),
                         );
                       } else {
                         print("Error ");
@@ -200,19 +222,21 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                 ),
               ],
             ),
+
           ),
+          //
         ],
       ),
     );
   }
 
   Widget _buildItem(
-    String imgPath,
-    String labName,
-    String Labby,
-    String barcode,
-    String referenceName,
-  ) {
+      String imgPath,
+      String labName,
+      String Labby,
+      String barcode,
+      String referenceName,
+      ) {
     return Padding(
         padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
         child: InkWell(
@@ -221,12 +245,12 @@ class _HomeScreenUIState extends State<HomeScreenUI> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => detailsPage(
-                          heroTag: imgPath,
-                          labPlace: Labby,
-                          foodName: labName,
-                          barcode: barcode,
-                          referenceName: referenceName,
-                        )),
+                      heroTag: imgPath,
+                      labPlace: Labby,
+                      foodName: labName,
+                      barcode: barcode,
+                      referenceName: referenceName,
+                    )),
               );
             },
             child: Row(
